@@ -1,4 +1,4 @@
-# dinput8
+# Rally Mod
 RallyMod implemented as a dinput8 wrapper
 
 **Credits**
