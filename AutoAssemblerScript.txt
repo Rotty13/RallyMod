@@ -1,0 +1,122 @@
+[ENABLE]
+
+aobscanmodule(ChangeHealth,DarkSoulsIII.exe,E8 B4 00 02 00 90 E9 43 A3 ED FF)
+registersymbol(ChangeHealth)
+alloc(newmem,2048,ChangeHealth)
+define(BaseB,DarkSoulsIII.exe+4768E78)
+label(returnhere)
+label(originalcode)
+label(exit)
+
+
+label(healthbarPtr)
+label(attackerPtr)
+label(HealthStealModifierPtr)
+label(RallyTimePtr)
+
+
+newmem: //this is allocated memory, you have read,write,execute access
+
+PUSH rax
+PUSH rcx
+PUSH edx
+PUSH rsi
+PUSH rdi
+PUSH r10
+sub esp,16
+movss [esp+0], xmm0
+movss [esp+4], xmm1
+
+mov  rax, QWORD PTR [DarkSoulsIII.exe+0x4783628]
+mov     rax, QWORD PTR [rax+0x8]
+mov     rax, QWORD PTR [rax+0x14E8]
+mov     rax, QWORD PTR [rax]
+mov     rcx, QWORD PTR [rax+0x10]
+add     rcx, 0xC8
+mov     [healthbarPtr], rcx////healthbar ptr
+
+mov eax, [RallyTimePtr] ////Tunable rallytime
+mov     DWORD PTR [rcx+0xBC], eax
+
+
+mov     rax, [BaseB] //hero ptr
+mov     rax, [rax+0x80] //hero ptr
+mov     [attackerPtr], rdi////
+
+cmp     rdi, rax
+jne     L1
+mov     rdi, [rdi+0x1F90]
+mov     rdi,[rdi+0x18]
+mov     eax,[rdi+0xD8]
+
+cvtsi2ss        xmm0, edx ///HealModifier Part
+movss  xmm1, [HealthStealModifierPtr]
+mulss   xmm0, xmm1
+cvttss2si       edx, xmm0
+
+
+sub     eax, edx
+mov     edx,[rcx+0xD0]
+
+
+cmp     eax, edx
+cmovg   eax, edx
+mov     [rdi+0xD8], eax
+
+L1:
+
+movss xmm1, [esp+4]
+movss xmm0, [esp+0]
+ADD esp,16
+POP r10
+POP rdi
+POP rsi
+POP edx
+POP rcx
+POP rax
+
+originalcode:
+call DarkSoulsIII.exe+9D94B0
+
+exit:
+jmp returnhere
+
+healthbarPtr:
+dq 0
+attackerPtr:
+dq 0
+
+//align 4
+HealthStealModifierPtr:
+db 00 00 80 3F
+RallyTimePtr:
+db 00 00 00 41
+
+
+ChangeHealth:
+jmp newmem
+returnhere:
+
+registersymbol(healthbarPtr)
+registersymbol(attackerPtr)
+registersymbol(HealthStealModifierPtr)
+registersymbol(RallyTimePtr)
+
+ 
+[DISABLE]
+ChangeHealth:
+call DarkSoulsIII.exe+9D94B0
+
+unregistersymbol(healthbarPtr)
+unregistersymbol(attackerPtr)
+unregistersymbol(HealthStealModifierPtr)
+unregistersymbol(RallyTimePtr)
+unregistersymbol(returnhere)
+unregistersymbol(originalcode)
+unregistersymbol(exit)
+unregistersymbol(ChangeHealth)
+dealloc(newmem)
+unregistersymbol(newmem)
+//"DarkSoulsIII.exe"+9B93F7:
+//call DarkSoulsIII.exe+9D94B0
+

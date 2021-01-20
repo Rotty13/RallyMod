@@ -1,0 +1,37 @@
+7FF4AC851750	Target 
+	[+xa]	7FF4AC853998
+		[+18]	7FF4AC8547D0
+			[+D8]	7FF4AC8548A8	HP
+
+
+7FF4ACD06850	Self Hero
+		[+xa]	7FF4ACD08C10
+			[+18]	7FF4ACD09A60
+				[+D8]	7FF4ACD09B38	HP
+
+Entity Deal Damage			
+DarkSoulsIII.exe+9B93F7 - call DarkSoulsIII.exe+9D94B0
+	RAX = 7FF4FCA74750	Target
+	RCX = 7FF4ADA59BB0	[RAX+xa[+18]]
+	RDI = 7FF4AE573A90	Attacker
+	RDX = 00000000FFFFFF56 Damage Negative Int
+	
+Drink Estus
+DarkSoulsIII.exe+9B2075 - call DarkSoulsIII.exe+9D94B0
+	RAX = 7FF4ADC46C00
+	RCX = 7FF4ADC49E10 [RAX+xa[+18]]
+	RDI = 7FF4ADC46C00
+
+Player Health Bar Struct
+7FF492B69378
+	[+D0] Previous Health
+	[+D4] Float Drain Delay
+	[+D8] Int Drain State 0,1,2
+	
+
+
+[[[[DarkSoulsIII.exe+4783628+8]+14E8]+0]+10]+68+60+BC DrainDelay float
+[[[[DarkSoulsIII.exe+4783628+8]+14E8]+0]+10]+68+60+D0 PrevHealth int
+[[[[DarkSoulsIII.exe+4783628+8]+14E8]+0]+10]+68+60+D8 DrainState 
+[[[BaseB+80]+1F90]+18]+D8 Health int
+
